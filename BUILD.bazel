@@ -1,0 +1,35 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# A Gazelle executable for auto-generating Go BUILD definitions
+gazelle(
+    name = "gazelle",
+    prefix = "rules-go-issue-1987",
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "rules-go-issue-1987",
+    visibility = ["//visibility:private"],
+    deps = [
+    ],
+)
+
+go_binary(
+    name = "rules-go-issue-1987",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "rules-go-issue-1987_linux",
+    embed = [":go_default_library"],
+    goarch = "amd64",
+    goos = "linux",
+    # Compiles go code with CGO_ENABLED=0. Mostly often used to force go code to not link against libc.
+    pure = "on",
+    # `go tool link` options, -ldflags="-w -s" (disable DWARF generation, disable symbol table)
+    gc_linkopts = ["-w", "-s"],
+    visibility = ["//visibility:public"],
+)
