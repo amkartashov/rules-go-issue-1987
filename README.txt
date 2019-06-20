@@ -2,16 +2,14 @@ The issue is described here: https://github.com/bazelbuild/rules_go/issues/1987
 
 To reproduce:
 
-##### on a box with docker and git
+##### on a box with docker
 
-$ git clone https://github.com/gorilych/rules-go-issue-1987.git
-$ cd rules-go-issue-1987
-$ sudo docker run --entrypoint bash --rm -ti -v `pwd`:/mnt l.gcr.io/google/bazel:0.27.0
+$ docker run --entrypoint bash --rm -ti l.gcr.io/google/bazel:0.27.0
 
 ##### inside container run
 
-# cp -a /mnt /p
-# cd /p
+# git clone https://github.com/gorilych/rules-go-issue-1987.git
+# cd rules-go-issue-1987
 # bazel build //...
 
 Result will be:
